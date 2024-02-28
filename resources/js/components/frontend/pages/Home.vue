@@ -24,7 +24,6 @@ const products = ref([]);
 import Default from '../layouts/Default.vue';
 import Cards from '../layouts/Cards.vue';
 import CardCategory from '../layouts/CardCategory.vue';
-import Product from '../../layouts/Product.vue';
 
 
 onMounted(()=>{
