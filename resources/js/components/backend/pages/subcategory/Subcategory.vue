@@ -1,12 +1,13 @@
 <template>
-     <div class="overflow-x-auto">
+    <Loader v-if="isLoading" />
+     <div v-else class="overflow-x-auto">
         <div class="card">
             <div class="card-header">
                 <h2 class="card-title">Subcategory Lists ({{ totalRecord }})
                         <label class="input input-bordered flex items-center gap-2">
                     <input type="text" class="grow" placeholder="Search" v-model="searchTerm" @input="searchCategory" />
                 </label>
-                <RouterLink :to="{ name: 'admin.addsubcategory' }" class="btn btn-sm btn-primary label-text-alt">Add New</RouterLink>
+                <RouterLink :to="{ name: 'admin.addsubcategory' }" class="btn btn-sm btn-primary">Add New</RouterLink>
                 </h2>
                 
             </div>
@@ -53,6 +54,7 @@ import { useToastr } from '@/toastr'
 import useToken from '@/services/token'
 import { RouterLink } from 'vue-router';
 import useAxios from '@/services/axios';
+import Loader from '@/services/Loader.vue';
 
 const toastr = useToastr();
 const isLoading = ref(false);
@@ -65,6 +67,10 @@ const totalRecord = ref(0);
 
 onMounted(() => {
     fetchSubcategory();
+    isLoading.value = true;
+    setTimeout(() => {
+        isLoading.value = false;
+    }, 1000);
 })
 
 const fetchSubcategory = async () => {

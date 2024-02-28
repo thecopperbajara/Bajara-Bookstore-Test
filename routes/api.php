@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\AuthController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\SubcategoryController;
+use App\Http\Controllers\Backend\UsersController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ Route::middleware('auth:customer')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () { 
     Route::get('/admin/profile', [AuthController::class, 'profile']);
-    Route::post('/admin/logout', [AuthController::class, 'destroy']);
+    Route::get('/admin/logout', [AuthController::class, 'destroy']);
 });
 
 Route::middleware('guest')->group(function () { 
@@ -44,4 +45,8 @@ Route::group(['prefix'=>'admin', 'middleware'=> 'auth:sanctum'], function(){
     Route::resource('/products', ProductController::class);
     Route::post('/products/{product}', [ProductController::class, 'update']);
     Route::get('/authors', [AuthController::class, 'fetchAuthors']);
+
+    Route::resource('/users', UsersController::class);
+    Route::post('/users/{user}', [UsersController::class, 'update']);
+    Route::get('/fetchRoles', [UsersController::class, 'fetchRoles']);
 });

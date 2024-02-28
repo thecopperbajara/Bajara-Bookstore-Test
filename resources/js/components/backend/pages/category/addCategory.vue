@@ -1,5 +1,6 @@
 <template>
-    <div class="card bg-base-100 shadow-xl card-bordered">
+    <Loader v-if="isLoading" />
+    <div v-else class="card bg-base-100 shadow-xl card-bordered">
         <div class="card-body">
             <h2 class="card-title"> {{ isEditMode ? 'Edit' : 'Add New' }} Category <RouterLink
                     :to="{ name: 'admin.category' }" class="btn btn-sm btn-primary">Back</RouterLink>
@@ -17,8 +18,10 @@
                     <div class="label"><span class="label-text">Category Image</span></div>
                     <input type="file" class="file-input file-input-bordered w-full max-w-xs" @change="handleImageUpload"
                         accept="image/jpeg" />
-                    <img v-bind:src="imagePreview == null ? '/storage/category/' + form.image : imagePreview" width="100"
-                        height="100" />
+
+                        <img v-if="isEditMode" :src="'/storage/category/' + form.image" width="100" height="100" />
+                        <img v-if="imagePreview" :src="imagePreview" width="100" height="100" />
+
                     <div class="text-danger">{{ errors.image ? errors.image[0] : '' }}</div>
                 </div>
                 <button type="submit" class="btn btn-sm btn-active btn-primary">{{ isEditMode ? 'Update' : 'Save'
@@ -35,6 +38,7 @@ import Routers from '@/router'
 import useAxios from '@/services/axios'
 import useToken from '@/services/token'
 import { useToastr } from '@/services/toastr'
+import Loader from '@/services/Loader.vue'
 
 const form = ref({
     name: '',
@@ -46,12 +50,18 @@ const errors = ref('');
 const isEditMode = ref(false);
 const router = useRoute();
 const toastr = useToastr();
+const isLoading = ref(false);
 
 onMounted(() => {
     isEditMode.value = router.params.id !== undefined;
     if (isEditMode.value) {
         editCategory(router.params.id);
     }
+
+    isLoading.value = true;
+    setTimeout(() => {
+        isLoading.value = false;
+    }, 1000);
 });
 
 const editCategory = () => {

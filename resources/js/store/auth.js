@@ -21,8 +21,8 @@ const useAuth = defineStore('auth', () => {
         })
             .then(response => {
                 isAuthenticated.value = true
-                user.value = response.data.users;
-                setting.value = response.data.settings;
+                user.value = response.data;
+                // setting.value = response.data.settings;
             })
             .catch(error => {
                 isAuthenticated.value = false;
@@ -32,8 +32,13 @@ const useAuth = defineStore('auth', () => {
 
     function login(data) {
         axios.post('/api/admin/login', data).then((res) => {
-            setAuthUser(res.data, data.remember);
-            router.push({ name: 'dashboard' })
+            if(res.data.user.role_id === 3){
+                setAuthUser(res.data, data.remember);
+                router.push({ name: 'homepage' })
+            }else{
+                setAuthUser(res.data, data.remember);
+                router.push({ name: 'dashboard' })
+            }
         }).catch((error) => {
             // console.log('Login Err', error.response);
             if(error.response?.status ===422){
@@ -43,18 +48,18 @@ const useAuth = defineStore('auth', () => {
     }
 
     function setAuthUser(response, remember) {
-console.log('set USer', response);
         errorData.value = null
         isAuthenticated.value = true
         user.value = response.user
         useToken().setToken(response.access_token, remember)
         getAuthUser();
     }
+    
 
     function logout() {
         console.log('Logout');
 
-        axios.post('/api/admin/logout', {
+        axios.get('/api/admin/logout', {
             headers: {
                 Authorization: 'Bearer ' + useToken().getToken()
             }
@@ -77,7 +82,7 @@ console.log('set USer', response);
         if (!isAuthenticated.value) router.push({ name: 'login' });
     })
 
-    return { isAuthenticated, user, setting, errorData, logout, login }
+    return { isAuthenticated,getAuthUser,user, setting, errorData, logout, login }
 })
 
 export default useAuth;

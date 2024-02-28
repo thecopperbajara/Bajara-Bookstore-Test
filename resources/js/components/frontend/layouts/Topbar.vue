@@ -30,29 +30,56 @@
                     <RouterLink :to="{ name: 'homepage' }">Home</RouterLink>
                 </li>
                 <li>
-                    <RouterLink :to="{ name: 'shop' }">Shop</RouterLink>
+                    <RouterLink :to="{ name: 'shop' }">Books</RouterLink>
                 </li>
-                <li>
+                <!-- <li>
                     <RouterLink :to="{ name: 'cart' }">Cart</RouterLink>
-                </li>
-                <li>
+                </li> -->
+                <!-- <li>
                     <details>
                         <summary>Parent</summary>
                         <ul class="p-2">
-                            <!-- <li><a>Submenu 1</a></li>
-                            <li><a>Submenu 2</a></li> -->
+                             <li><a>Submenu 1</a></li>
+                            <li><a>Submenu 2</a></li>
                         </ul>
                     </details>
-                </li>
-                <li><RouterLink :to="{ name:'dashboard' }">Dashboard</RouterLink></li>
+                </li> -->
             </ul>
         </div>
         <div class="navbar-end">
-            <RouterLink :to="{name: 'admin.login'}" class="btn btn-sm">Login</RouterLink>
+            <div class="flex-none">
+                <ul class="menu menu-horizontal px-1">
+                    <li><a class="btn btn-sm p-1 mr-1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 opacity-70">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C15.09 3.81 16.76 3 18.5 3 21.58 3 24 5.42 24 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg></a></li>
+                    <li v-if="authUser?.isAuthenticated">
+                        <details>
+                            <summary>
+                                {{ authUser.user?.name }}
+                            </summary>
+                            <ul class="p-2 bg-base-100 rounded-t-none">
+                                <li><a>Profile</a></li>
+                                <li><a @click="logout">Logout</a></li>
+                            </ul>
+                        </details>
+                    </li>
+                    <li v-else>
+                        <RouterLink :to="{ name: 'admin.login' }" class="btn btn-sm">Login</RouterLink>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
 import { RouterLink } from 'vue-router';
+import useAuth from '@/store/auth'
+
+const authUser = useAuth();
+
+const logout = () => {
+    authUser.logout();
+}
+
 </script>

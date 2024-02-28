@@ -30,4 +30,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    function roles()
+    {
+        return $this->hasOne(Role::class, 'id', 'role_id');
+    }
+
+    public function favoriteBooks()
+    {
+        return $this->belongsToMany(Product::class, 'user_book_favorite', 'user_id', 'product_id');
+    }
 }

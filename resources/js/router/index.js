@@ -211,36 +211,36 @@ const routes = [
             },
 
 
-            // { // users
-            //     path: '/admin/users',
-            //     name: 'admin.users',
-            //     component: () => import('@/components/backend/users/Users.vue'),
-            //     meta: {
-            //         middleware: 'auth',
-            //         title: 'Users List',
-            //         requiresAuth: true
-            //     }
-            // },
-            // {
-            //     path: '/admin/addUpdate',
-            //     name: 'admin.adduser',
-            //     component: () => import('@/components/backend/users/addUser.vue'),
-            //     meta: {
-            //         middleware: 'auth',
-            //         title: 'Users Add or Update',
-            //         requiresAuth: true
-            //     }
-            // },
-            // {
-            //     path: '/admin/useredit/:id',
-            //     name: 'admin.userEdit',
-            //     component: () => import('@/components/backend/users/addUser.vue'),
-            //     meta: {
-            //         middleware: 'auth',
-            //         title: 'Users Add or Update',
-            //         requiresAuth: true
-            //     }
-            // },
+            { // users
+                path: '/admin/users',
+                name: 'admin.users',
+                component: () => import('@/components/backend/pages/users/Users.vue'),
+                meta: {
+                    middleware: 'auth',
+                    title: 'Users List',
+                    requiresAuth: true
+                }
+            },
+            {
+                path: '/admin/addUpdate',
+                name: 'admin.adduser',
+                component: () => import('@/components/backend/pages/users/addUser.vue'),
+                meta: {
+                    middleware: 'auth',
+                    title: 'Users Add or Update',
+                    requiresAuth: true
+                }
+            },
+            {
+                path: '/admin/useredit/:id',
+                name: 'admin.userEdit',
+                component: () => import('@/components/backend/pages/users/addUser.vue'),
+                meta: {
+                    middleware: 'auth',
+                    title: 'Users Add or Update',
+                    requiresAuth: true
+                }
+            },
 
             // {
             //     path: '/admin/setting',
@@ -275,25 +275,26 @@ const router = createRouter({
     routes,
 })
 
-// router.beforeEach(async (to, from) => {
-//     const cartData = useCartData();
-//     const customer = useCustomerStore();
-//     const authStore = useAuth();
+router.beforeEach(async (to, from) => {
+    const cartData = useCartData();
+    const customer = useCustomerStore();
+    const authStore = useAuth();
 
-//     if(to.meta.middleware === 'user'){
-//         await Promise.all([
-//             // customer.setCustomer(),
-//             // cartData.fetchCartItem(),
-//         ])
-//     }
-//     if(customer.isCustomer  && to.name ==='admin.login' ){
-//         router.push({ name: 'homepage' })
-//     }
+    if(to.meta.middleware === 'user'){
+        await Promise.all([
+            authStore.getAuthUser(),
+            // customer.setCustomer(),
+            // cartData.fetchCartItem(),
+        ])
+    }
+    if(customer.isCustomer  && to.name ==='admin.login' ){
+        router.push({ name: 'homepage' })
+    }
 
-//     if(!authStore.isAuthenticated && to.meta.middleware === 'auth'){
-//         router.push({ name:'admin.login' })
-//     }
-// });
+    if(!authStore.isAuthenticated && to.meta.middleware === 'auth'){
+        router.push({ name:'admin.login' })
+    }
+});
 
 
 export default router

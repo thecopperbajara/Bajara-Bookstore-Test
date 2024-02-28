@@ -5,12 +5,45 @@
 
       <ul class="menu bg-base-200 h-100">
          <!-- <li><RouterLink :to="{name: 'homepage'}" >Home</RouterLink></li> -->
-         <li><RouterLink :to="{name: 'dashboard'}">Dashboard</RouterLink></li>
-         <li><RouterLink :to="{ name:'admin.category' }" >Category</RouterLink></li>
-         <li><RouterLink :to="{ name: 'admin.subcategory' }" >SubCategory</RouterLink></li>
-         <li><RouterLink :to="{ name: 'admin.product' }">Books</RouterLink></li>
-         <li><a @click="logout()" class="btn btn-sm btn-neutral mt-8">Logout</a></li>
+         <li>
+            <RouterLink :to="{ name: 'dashboard' }">Dashboard</RouterLink>
+         </li>
+
+         <li>
+            <details>
+               <summary>Category</summary>
+               <ul>
+                  <li>
+                     <RouterLink :to="{ name: 'admin.category' }">Category</RouterLink>
+                  </li>
+                  <li>
+                     <RouterLink :to="{ name: 'admin.subcategory' }">SubCategory</RouterLink>
+                  </li>
+               </ul>
+            </details>
+         </li>
+
+         <li>
+            <RouterLink :to="{ name: 'admin.product' }">Books</RouterLink>
+         </li>
+         <li>
+            <RouterLink :to="{ name: 'admin.users' }">Users</RouterLink>
+         </li>
+         <li><a @click="logout" class="btn btn-sm btn-neutral mt-8">Logout</a></li>
+
+         
       </ul>
    </aside>
-
 </template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import useAuth from '@/store/auth'
+
+const authStore = useAuth();
+
+
+const logout = () => {
+   authStore.logout();
+}
+</script>

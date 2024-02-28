@@ -26,7 +26,7 @@ class AuthController extends Controller
         return $request->user();
     }
 
-    public function destroy(Request $request): Response
+    public function destroy(): Response
     {
         Auth::user()->tokens()->delete();
 
