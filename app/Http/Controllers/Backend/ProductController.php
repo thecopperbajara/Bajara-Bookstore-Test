@@ -13,11 +13,22 @@ class ProductController extends Controller
 {
     public function index()
     {
+        $categoryId = request('category');
+        $authorId = request('author');
+
         $query = Product::with('category', 'subcategory')->orderBy('id', 'desc');
 
-        $products = $query->paginate(10);
+        if ($categoryId) {
+            $query->whereHas('category', function ($q) use ($categoryId) {
+                $q->where('category_id', $categoryId);
+            });
+        }
+    
+        if ($authorId) {
+            $query->where('author_id', $authorId);
+        }
 
-        // $products = Product::with('category', 'subcategory')->orderBy('id', 'desc')->paginate(10);
+        $products = $query->paginate(10);
         return ProductResource::collection($products);
     }
 

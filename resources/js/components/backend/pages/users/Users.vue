@@ -53,6 +53,7 @@ import { useToastr } from '@/toastr'
 import useToken from '@/services/token'
 import { RouterLink } from 'vue-router';
 import useAxios from '@/services/axios';
+import useAlert from '@/services/alert';
 import Loader from '@/services/Loader.vue';
 
 const toastr = useToastr();
@@ -84,7 +85,9 @@ const fetchUsers = async () => {
 
 
 const deleteUser = async (id) => {
-    if (confirm('Are you sure to delete?')) {
+    const result = await useAlert().centerMessageAlert("warning");
+
+    if (result.isConfirmed) {
         await useAxios.delete(`/admin/users/${id}`, { headers: { Authorization: "Bearer " + useToken().getToken() }, }).then((res) => {
             if (res.data.success === true) {
                 fetchUsers();

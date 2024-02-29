@@ -10,6 +10,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
@@ -93,6 +94,12 @@ class UsersController extends Controller
 
     public function destroy(User $user)
     {
+
+        DB::table('user_book_favorite')->where('user_id', $user->id)->delete();
+
+    // Detach any remaining relationships
+    $user->favoriteBooks()->detach();
+
         $user->delete();
         Cache::forget('users');
         return response()->json(['success' => true, 'message' => 'User Deleted successfully'],200);

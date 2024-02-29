@@ -19,6 +19,9 @@ Route::middleware('guest:customer')->group(function () {
 
     Route::get('/user/category', [HomeController::class, 'fetchCategory']);
     Route::get('/user/products', [HomeController::class, 'fetchProducts']);
+    Route::get('/user/authors', [AuthController::class, 'fetchAuthors']);
+
+    Route::get('/user/productById', [HomeController::class, 'productById']);
 });
 
 Route::middleware('auth:customer')->group(function () {
@@ -28,10 +31,16 @@ Route::middleware('auth:customer')->group(function () {
 Route::middleware('auth:sanctum')->group(function () { 
     Route::get('/admin/profile', [AuthController::class, 'profile']);
     Route::get('/admin/logout', [AuthController::class, 'destroy']);
+
+    Route::post('/user/addFavorite', [HomeController::class, 'markAsFavorite']);
+    Route::post('/user/removeFromFavorites', [HomeController::class, 'removeFromFavorites']);
+    Route::get('/user/isInWishlist/{bookId}', [HomeController::class, 'isInWishlist']);
+
 });
 
 Route::middleware('guest')->group(function () { 
     Route::post('/admin/login', [AuthController::class, 'store']);
+    Route::post('/user/register', [HomeController::class, 'register']);
 });
 
 Route::group(['prefix'=>'admin', 'middleware'=> 'auth:sanctum'], function(){

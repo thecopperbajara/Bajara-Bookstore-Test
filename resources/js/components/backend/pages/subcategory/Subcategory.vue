@@ -55,6 +55,7 @@ import useToken from '@/services/token'
 import { RouterLink } from 'vue-router';
 import useAxios from '@/services/axios';
 import Loader from '@/services/Loader.vue';
+import useAlert from '@/services/alert';
 
 const toastr = useToastr();
 const isLoading = ref(false);
@@ -86,7 +87,9 @@ const fetchSubcategory = async () => {
 
 
 const deleteSubcategory = async (id) => {
-    if (confirm('Are you sure to delete?')) {
+    const result = await useAlert().centerMessageAlert("warning");
+
+    if (result.isConfirmed) {
         await useAxios.delete(`/admin/subcategory/${id}`, { headers: { Authorization: "Bearer " + useToken().getToken() }, }).then((res) => {
             if (res.data.success === true) {
                 fetchSubcategory();

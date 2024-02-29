@@ -46,7 +46,10 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="text-danger">{{ errors.role_id ? errors.role_id[0] : '' }}</div>
+                        <div v-if="isDropdownOpen && filteredRoles.length === 0" class="text-danger">
+                            No matching found.
+                        </div>
+                        <div class="text-danger" v-else>{{ errors.role_id ? errors.role_id[0] : '' }}</div>
                     </div>
 
                 </div>

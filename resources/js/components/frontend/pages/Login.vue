@@ -5,7 +5,7 @@
                 class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                 <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                     <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                        Sign in to your account
+                        Login your account
                     </h1>
 
                     <div v-if="authStore.errorData" class="alert alert-danger" role="alert">
@@ -55,6 +55,11 @@
                         </div>
                         <button type="submit" class="btn btn-sm btn-active btn-primary" :disabled="processing" @click="login">{{ processing ? "Please wait" : "Login" }}</button>
                     </form>
+
+                    <div class="flex items-center justify-between">
+                        Dont have Account?
+                        <RouterLink :to="{name: 'register'}" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Register</RouterLink>
+                    </div>
                 </div>
             </div>
         </div>

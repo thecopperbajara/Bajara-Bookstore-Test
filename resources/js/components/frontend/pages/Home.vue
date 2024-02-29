@@ -9,7 +9,7 @@
             </h1>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-5 mb-5">
-                <CardCategory v-for="category in categories" :key="category.id" :id="category.id" :name="category.name"
+                <CardCategory v-for="category in categories" :key="category.id" :cat_id="category.id" :name="category.name"
                     :image="category.image" />
             </div>
         </div>
@@ -20,7 +20,7 @@
             </h1>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                <Cards v-for="product in products" :key="product.id" :id="product.id" :title="product.title"
+                <Cards v-for="product in products" :key="product.id" :prod_id="product.id" :title="product.title"
                     :category="product.category" :subcategory="product.subcategory" :image="product.image"
                     :buy_price="product.buy_price" :price="product.price" :author="product.author" />
             </div>

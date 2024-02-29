@@ -39,15 +39,35 @@ const routes = [
                     title: 'Shop Page'
                 }
             },
-            // {
-            //     path:'/checkout',
-            //     name:'checkout',
-            //     component: () => import('@/components/frontend/Checkout.vue'),
-            //     meta:{
-            //         middleware:'user',
-            //         title: 'Checkout Page'
-            //     }
-            // },
+            {
+                path:'/user/category/:id',
+                name:'user.category',
+                component: () => import('@/components/frontend/pages/Shop.vue'),
+                meta:{
+                    middleware:'user',
+                    title: 'Category Wise Books'
+                }
+            },
+            {
+                path:'/user/product/:id',
+                name:'user.product',
+                component: () => import('@/components/frontend/pages/BookDetails.vue'),
+                meta:{
+                    middleware:'user',
+                    title: 'Books Details'
+                }
+            },
+            {
+                path:'/wishlist',
+                name:'wishlist',
+                component: () => import('@/components/frontend/pages/Wishlist.vue'),
+                meta:{
+                    middleware:'user',
+                    title: 'Wishlist Page'
+                }
+            },
+
+           
 
             // { // user login
             //     path: '/login',
@@ -89,15 +109,15 @@ const routes = [
             title: `Login`
         }
     },
-    // {
-    //     path: "/register",
-    //     name: "register",
-    //     component: () => import('@/components/backend/Register.vue'),
-    //     meta: {
-    //         middleware: "guest",
-    //         title: `Register`
-    //     }
-    // },
+    {
+        path: "/register",
+        name: "register",
+        component: () => import('@/components/frontend/pages/Register.vue'),
+        meta: {
+            middleware: "guest",
+            title: `Register`
+        }
+    },
     {
         path: "/admin/dashboard",
         name: 'admin.dashboard',
@@ -280,13 +300,13 @@ router.beforeEach(async (to, from) => {
     const customer = useCustomerStore();
     const authStore = useAuth();
 
-    if(to.meta.middleware === 'user'){
-        await Promise.all([
-            authStore.getAuthUser(),
-            // customer.setCustomer(),
-            // cartData.fetchCartItem(),
-        ])
-    }
+    // if(to.meta.middleware === 'user'){
+    //     await Promise.all([
+    //         authStore.getAuthUser(),
+    //         // customer.setCustomer(),
+    //         // cartData.fetchCartItem(),
+    //     ])
+    // }
     if(customer.isCustomer  && to.name ==='admin.login' ){
         router.push({ name: 'homepage' })
     }
